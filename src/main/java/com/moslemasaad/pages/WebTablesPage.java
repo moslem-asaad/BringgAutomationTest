@@ -100,13 +100,6 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
     }
 
-    public void deleteRecordFromList(List<WebElement> records,int idx){
-        WebElement deleteButton = records.get(idx).findElement(By.xpath("//span[@title='Delete']"));
-        if (deleteButton.isEnabled())
-            deleteButton.click();
-        this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-    }
-
     public void deleteFirstVisibleFilteredRecord() {
         List<WebElement> records = driver.findElements(By.cssSelector(".rt-tr-group"));
         for (WebElement row : records) {
@@ -116,12 +109,17 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         }
     }
 
-
     public List<WebElement> filterRecords(String prefix){
         removeAds();
         searchBox.clear();
         searchBox.sendKeys(prefix);
         return driver.findElements(By.className("rt-tr-group"));
+    }
+
+    public RegistrationFormModal addEmployee(){
+        removeAds();
+        addRecordButton.click();
+        return new RegistrationFormModal(driver,false);
     }
 }
 
