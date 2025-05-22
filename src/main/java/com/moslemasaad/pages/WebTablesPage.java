@@ -88,6 +88,7 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         return emailSection.getAccessibleName();
     }
 
+
     public void deleteGeneralRecord(int indx) {
         removeAds();
         String idRecord = deleteId + (indx + 1);
@@ -97,6 +98,18 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
                 (By.id(idRecord)));
         deleteButton.click();
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+    }
+
+    public void deleteRecordFromList(List<WebElement> records,int idx){
+        WebElement deleteButton = records.get(idx).findElement(By.xpath("//span[@title='Delete']"));
+        deleteButton.click();
+    }
+
+    public List<WebElement> filterRecords(String prefix){
+        removeAds();
+        searchBox.clear();
+        searchBox.sendKeys(prefix);
+        return driver.findElements(By.className("rt-tr-group"));
     }
 }
 
