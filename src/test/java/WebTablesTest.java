@@ -127,7 +127,7 @@ public class WebTablesTest extends TestBase {
     }
 
     @Test
-    public void addEmployeeMissDepartmentField() throws IOException {
+    public void addEmployeeMissDepartmentField() throws Exception {
         int records = webTablesPage.getNonEmptyRecords();
         RegistrationFormModal formModal = webTablesPage.addEmployee();
         Assert.assertTrue(formModal.isInForm());
@@ -146,7 +146,7 @@ public class WebTablesTest extends TestBase {
     }
 
     @Test
-    public void addEmployeeMissSalaryField() throws IOException {
+    public void addEmployeeMissSalaryField() throws Exception {
         int records = webTablesPage.getNonEmptyRecords();
         RegistrationFormModal formModal = webTablesPage.addEmployee();
         Assert.assertTrue(formModal.isInForm());
@@ -209,6 +209,118 @@ public class WebTablesTest extends TestBase {
         Assert.assertEquals(1,webTablesPage.getNonEmptyRecords());
         webTablesPage.deleteFirstVisibleFilteredRecord();
         Assert.assertEquals(0,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeEmptyFirstName(){
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@gmail.com";
+        String age = "25";
+        String salary = "10000";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeWrongEmailSyntax() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad";
+        String age = "25";
+        String salary = "10000";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeWrongAgeSyntax() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@example.com";
+        String age = "ab";
+        String salary = "10000";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeNegativeAgeValue(){
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@example.com";
+        String age = "-1";
+        String salary = "10000";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeWrongSalarySyntax() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@example.com";
+        String age = "25";
+        String salary = "abc";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeNegativeSalaryValue(){
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@example.com";
+        String age = "25";
+        String salary = "-10000";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
+    }
+
+    @Test
+    public void addEmployeeNonIntegerSalaryValue(){
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.addEmployee();
+        Assert.assertTrue(formModal.isInForm());
+        String firstName = "Moslem";
+        String lastName = "Asaad";
+        String userEmail = "moslem.asaad@example.com";
+        String age = "25";
+        String salary = "10000.5";
+        String department = "Engineering";
+        Assert.assertThrows(IllegalArgumentException.class,() -> formModal.fillForm(firstName,lastName,userEmail,age,salary,department));
+        webTablesPage = formModal.submitForm();
+        Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
     }
 
 

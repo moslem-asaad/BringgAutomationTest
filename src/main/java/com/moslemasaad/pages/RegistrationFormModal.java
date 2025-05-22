@@ -1,5 +1,6 @@
 package com.moslemasaad.pages;
 
+import com.moslemasaad.FieldsValidator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -47,31 +48,31 @@ public class RegistrationFormModal {
     }
 
     public void fillFirstName(String firstName) throws IOException {
-        validFirstName();
+        validFirstName(firstName);
         if (!isEdit){
             firstNameElement.sendKeys(firstName);
         }
     }
     public void fillLastName(String lastName) throws IOException {
-        validLastName();
+        validLastName(lastName);
         if (!isEdit){
             lastNameElement.sendKeys(lastName);
         }
     }
     public void fillUserEmail(String userEmail) throws IOException {
-        validUserEmail();
+        validUserEmail(userEmail);
         if (!isEdit){
             userEmailElement.sendKeys(userEmail);
         }
     }
     public void fillAge(String age) throws IOException {
-        validAge();
+        validAge(age);
         if (!isEdit){
             ageElement.sendKeys(age);
         }
     }
     public void fillSalary(String salary) throws IOException {
-        validSalary();
+        validSalary(salary);
         if (!isEdit){
             salaryElement.sendKeys(salary);
         }
@@ -97,7 +98,7 @@ public class RegistrationFormModal {
         return new WebTablesPage(driver);
     }
 
-    private void validFirstName() throws IOException {
+    private void validFirstName(String firstName) throws IOException {
         if (!isEdit) {
             if (!firstNameElement.getDomProperty("value").isEmpty()) {
                 throw new IOException("The field First Name should be empty");
@@ -108,8 +109,11 @@ public class RegistrationFormModal {
                 throw new IOException("The field First Name should not be empty");
             }
         }
+        if (firstName.isEmpty()){
+            throw new IllegalArgumentException("First Name should contain at least one letter");
+        }
     }
-    private void validLastName() throws IOException {
+    private void validLastName(String lastName) throws IOException {
         if (!isEdit) {
             if (!lastNameElement.getDomProperty("value").isEmpty()) {
                 throw new IOException("The field Last Name should be empty");
@@ -120,9 +124,12 @@ public class RegistrationFormModal {
                 throw new IOException("The field Last Name should not be empty");
             }
         }
+        if (lastName.isEmpty()){
+            throw new IllegalArgumentException("Last Name should contain at least one letter");
+        }
     }
 
-    private void validUserEmail() throws IOException {
+    private void validUserEmail(String email) throws IOException {
         if (!isEdit) {
             if (!userEmailElement.getDomProperty("value").isEmpty()){
                 throw new IOException("The field User Email should be empty");
@@ -133,9 +140,12 @@ public class RegistrationFormModal {
                 throw new IOException("The field User Email should not be empty");
             }
         }
+        if (!FieldsValidator.isValidEmail(email)){
+            throw new IllegalArgumentException("The email is Nor valid");
+        }
     }
 
-    private void validAge() throws IOException {
+    private void validAge(String age) throws IOException {
         if (!isEdit) {
             if (!ageElement.getDomProperty("value").isEmpty()){
                 throw new IOException("The field Age should be empty");
@@ -146,9 +156,19 @@ public class RegistrationFormModal {
                 throw new IOException("The field Age should not be empty");
             }
         }
+        if (age.length()>2){
+            throw new IllegalArgumentException("Age should be at most two digits");
+        }
+        if (!FieldsValidator.isValidNumber(age)){
+            throw new IllegalArgumentException("The Age should be positive integer number");
+        }
+        double ageNum = getNumericValue(age);
+        if (ageNum<0){
+            throw new IllegalArgumentException("The employee age should be positive");
+        }
     }
 
-    private void validSalary() throws IOException {
+    private void validSalary(String salary) throws IOException {
         if (!isEdit) {
             if (!salaryElement.getDomProperty("value").isEmpty()){
                 throw new IOException("The field Salary should be empty");
@@ -159,8 +179,19 @@ public class RegistrationFormModal {
                 throw new IOException("The field Salary should not be empty");
             }
         }
+        if (!FieldsValidator.isValidNumber(salary)){
+            throw new IllegalArgumentException("The Salary should be positive integer number");
+        }
+        double salaryNum = getNumericValue(salary);
+        if (salaryNum<=0){
+            throw new IllegalArgumentException("The Salary should be positive");
+        }else{
+            if (salaryNum - (int) salaryNum !=0){
+                throw new IllegalArgumentException("The Salary should be an integer value");
+            }
+        }
     }
-    private void validDepartment() throws IOException {
+    private void validDepartment(String department) throws IOException {
         if (!isEdit) {
             if (!departmentElement.getDomProperty("value").isEmpty()){
                 throw new IOException("The field Department should be empty");
@@ -170,6 +201,17 @@ public class RegistrationFormModal {
             if (departmentElement.getDomProperty("value").isEmpty()){
                 throw new IOException("The field Department should not be empty");
             }
+        }
+        if (department.isEmpty()){
+            throw new IllegalArgumentException("Department should contain at least one letter");
+        }
+    }
+
+    private double getNumericValue(String number){
+        try {
+            return Double.parseDouble(number);
+        } catch (NumberFormatException nfe) {
+            throw new NumberFormatException("The Field Should be a number");
         }
     }
 
