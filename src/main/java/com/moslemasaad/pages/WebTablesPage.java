@@ -102,8 +102,20 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
 
     public void deleteRecordFromList(List<WebElement> records,int idx){
         WebElement deleteButton = records.get(idx).findElement(By.xpath("//span[@title='Delete']"));
-        deleteButton.click();
+        if (deleteButton.isEnabled())
+            deleteButton.click();
+        this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
     }
+
+    public void deleteFirstVisibleFilteredRecord() {
+        List<WebElement> records = driver.findElements(By.cssSelector(".rt-tr-group"));
+        for (WebElement row : records) {
+            WebElement deleteButton = row.findElement(By.xpath("//span[@title='Delete']"));
+            deleteButton.click();
+            break;
+        }
+    }
+
 
     public List<WebElement> filterRecords(String prefix){
         removeAds();

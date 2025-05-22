@@ -1,5 +1,6 @@
 import com.moslemasaad.DriverFactory;
 import com.moslemasaad.pages.WebTablesPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -57,45 +58,51 @@ public class WebTablesTest extends TestBase {
 
     @Test(priority = 4)
     public void filterRecordsByName(){
-        List<WebElement> elements =  webTablesPage.filterRecords("Cie");
+        webTablesPage.filterRecords("Cie");
         Assert.assertEquals(webTablesPage.countAllRecords()-1,webTablesPage.countEmptyRecords());
-        Assert.assertEquals(elements.size(),1);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),1);
     }
 
     @Test(priority = 4)
     public void filterRecordsByEmail(){
-        List<WebElement> elements =  webTablesPage.filterRecords("alden@example.com");
+        webTablesPage.filterRecords("alden@example.com");
         Assert.assertEquals(webTablesPage.countAllRecords()-1,webTablesPage.countEmptyRecords());
-        Assert.assertEquals(elements.size(),1);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),1);
     }
 
     @Test(priority = 4)
     public void filterRecordsByEmail2(){
-        List<WebElement> elements =  webTablesPage.filterRecords("@example.com");
+        webTablesPage.filterRecords("@example.com");
         Assert.assertEquals(webTablesPage.countAllRecords()-3,webTablesPage.countEmptyRecords());
-        Assert.assertEquals(elements.size(),3);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),3);
     }
 
     @Test(priority = 5)
     public void filterRecordByName_DeleteRecord(){
-        List<WebElement> elements = webTablesPage.filterRecords("Cie");
-        webTablesPage.deleteRecordFromList(elements,0);
+        webTablesPage.filterRecords("Cie");
+        int records = webTablesPage.getNonEmptyRecords();
+        for (int i = 0;i< records ;i++){
+            webTablesPage.deleteFirstVisibleFilteredRecord();
+        }
         Assert.assertEquals(webTablesPage.countAllRecords(),webTablesPage.countEmptyRecords());
     }
 
     @Test(priority = 5)
     public void filterRecordByEmail_DeleteRecord(){
-        List<WebElement> elements = webTablesPage.filterRecords("alden@example.com");
-        webTablesPage.deleteRecordFromList(elements,0);
+        webTablesPage.filterRecords("alden@example.com");
+        int records = webTablesPage.getNonEmptyRecords();
+        for (int i = 0;i< records ;i++){
+            webTablesPage.deleteFirstVisibleFilteredRecord();
+        }
         Assert.assertEquals(webTablesPage.countAllRecords(),webTablesPage.countEmptyRecords());
     }
 
     @Test(priority = 5)
     public void filterRecordByEmail2_DeleteRecords(){
-        List<WebElement> elements = webTablesPage.filterRecords("@example.com");
+        webTablesPage.filterRecords("@example.com");
         int records = webTablesPage.getNonEmptyRecords();
         for (int i = 0;i< records ;i++){
-            webTablesPage.deleteRecordFromList(elements,i);
+            webTablesPage.deleteFirstVisibleFilteredRecord();
         }
        Assert.assertEquals(webTablesPage.countAllRecords(),webTablesPage.countEmptyRecords());
     }
