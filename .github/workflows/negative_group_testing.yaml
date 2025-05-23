@@ -1,4 +1,4 @@
-name: smoke testing
+name: negative group testing
 
 on:
   workflow_dispatch:
