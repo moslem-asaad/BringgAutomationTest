@@ -1,5 +1,6 @@
 import com.moslemasaad.DriverFactory;
 import com.moslemasaad.pages.WebTablesPage;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -17,6 +18,7 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+@Listeners({ AllureTestNg.class })
 public class TestBase {
 
     protected WebDriver driver;

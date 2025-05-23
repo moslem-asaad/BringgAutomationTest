@@ -47,14 +47,18 @@ jobs:
           mkdir -p allure-results
           cp -r target/allure-results/* allure-results/ || true
 
-      - name: Generate Allure Report
+      - name: Install Allure CLI
         run: |
           wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
           tar -zxvf allure-2.24.0.tgz
           mv allure-2.24.0 allure
-          ./allure/bin/allure generate allure-results -o allure-report --clean
+          chmod +x allure/bin/allure
 
-      - name: Upload Allure HTML Report as Artifact
+      - name: Generate Allure HTML Report
+        run: |
+          ./allure/bin/allure generate target/allure-results -o allure-report --clean
+
+      - name: Upload Allure HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-chrome
@@ -87,20 +91,22 @@ jobs:
           export BROWSER=firefox
           export GRID_URL=${{ github.event.inputs.grid_url }}
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
-          mkdir -p allure-results
-          cp -r target/allure-results/* allure-results/ || true
 
-      - name: Generate Allure Report
+      - name: Install Allure CLI
         run: |
           wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
           tar -zxvf allure-2.24.0.tgz
           mv allure-2.24.0 allure
-          ./allure/bin/allure generate allure-results -o allure-report --clean
+          chmod +x allure/bin/allure
 
-      - name: Upload Allure HTML Report as Artifact
+      - name: Generate Allure HTML Report
+        run: |
+          ./allure/bin/allure generate target/allure-results -o allure-report --clean
+
+      - name: Upload Allure HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report-firefox
+          name: allure-report-chrome
           path: allure-report
 
       - name: Tear down Grid

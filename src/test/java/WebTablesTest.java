@@ -1,10 +1,12 @@
 import com.moslemasaad.pages.RegistrationFormModal;
 import com.moslemasaad.pages.WebTablesPage;
+import io.qameta.allure.testng.AllureTestNg;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.io.IOException;
 
+@Listeners({ AllureTestNg.class })
 public class WebTablesTest extends TestBase {
     private WebTablesPage webTablesPage;
 
