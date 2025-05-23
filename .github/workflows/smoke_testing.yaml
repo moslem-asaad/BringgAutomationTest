@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: testng-report-ch
-          path: test-output/
+          path: target/surefire-reports/
 
       - name: Tear down Grid
         run: docker stop grid_container || true
@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: testng-report-fx
-          path: test-output/
+          path: target/surefire-reports/
 
       - name: Tear down Grid
         run: docker stop grid_container || true
