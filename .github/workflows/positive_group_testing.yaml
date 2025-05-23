@@ -46,7 +46,7 @@ jobs:
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
           
-          mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
+          mvn -q clean test -DsuiteXmlFile=testng-suites/testng-positive.xml
 
           # Tear down grid if exists
           docker stop grid_container || true
@@ -75,7 +75,7 @@ jobs:
           export BROWSER=firefox
           export GRID_URL=${{ github.event.inputs.grid_url }}
           
-          mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
+          mvn -q clean test -DsuiteXmlFile=testng-suites/testng-positive.xml
           
           # Tear down grid if exists
           docker stop grid_container || true
