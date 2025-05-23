@@ -52,22 +52,11 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
-      - name: Generate Allure report
-        run: mvn allure:report
-
-      - name: Upload Allure report as artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload TestNG Report (HTML)
+        uses: actions/upload-artifact@v3
         with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
-
-#      - name: Publish Allure Report to GitHub Pages (optional)
-#        if: success()
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: ./target/site/allure-maven-plugin
-
+          name: testng-report-ch
+          path: test-output/
 
       - name: Tear down Grid
         run: docker stop grid_container || true
@@ -97,22 +86,11 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
-      - name: Install Allure CLI
-        run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-          tar -zxvf allure-2.24.0.tgz
-          mv allure-2.24.0 allure
-          chmod +x allure/bin/allure
-
-      - name: Generate Allure HTML Report
-        run: |
-          ./allure/bin/allure generate target/allure-results -o allure-report-fx --clean
-
-      - name: Upload Allure HTML Report
-        uses: actions/upload-artifact@v4
+      - name: Upload TestNG Report (HTML)
+        uses: actions/upload-artifact@v3
         with:
-          name: allure-report-firefox
-          path: allure-report-fx
+          name: testng-report-fx
+          path: test-output/
 
       - name: Tear down Grid
         run: docker stop grid_container || true
