@@ -48,6 +48,12 @@ jobs:
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
+      - name: Install Allure CLI
+        run: |
+          sudo apt-add-repository -y ppa:qameta/allure
+          sudo apt-get update
+          sudo apt-get install -y allure
+
       - name: Generate Allure Report
         run: |
           mkdir -p target/allure-report
@@ -87,6 +93,12 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
+
+      - name: Install Allure CLI
+        run: |
+          sudo apt-add-repository -y ppa:qameta/allure
+          sudo apt-get update
+          sudo apt-get install -y allure
 
       - name: Generate Allure Report
         run: |
