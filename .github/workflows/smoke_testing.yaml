@@ -48,8 +48,19 @@ jobs:
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
-          # Tear down grid if exists
-          docker stop grid_container || true
+      - name: Generate Allure Report
+        run: |
+          mkdir -p target/allure-report
+          allure generate target/allure-results -o target/allure-report --clean
+
+      - name: Upload Allure HTML Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-chrome
+          path: target/allure-report
+
+      - name: Tear down Grid
+        run: docker stop grid_container || true
 
   TestFirefox_133_0:
     name: Test Firefox 133.0
@@ -76,9 +87,20 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
-          
-          # Tear down grid if exists
-          docker stop grid_container || true
+
+      - name: Generate Allure Report
+        run: |
+          mkdir -p target/allure-report
+          allure generate target/allure-results -o target/allure-report --clean
+
+      - name: Upload Allure HTML Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-chrome
+          path: target/allure-report
+
+      - name: Tear down Grid
+        run: docker stop grid_container || true
           
 
       
