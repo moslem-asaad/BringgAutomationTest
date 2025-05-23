@@ -392,6 +392,30 @@ public class WebTablesTest extends TestBase {
     }
 
 
+    @Test
+    public void editFirstEmployee_Salary() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.editGeneralRecord(0);
+        String salary = "20000";
+        formModal.clearAndFillSalary(salary);
+        webTablesPage = formModal.submitForm();
+        Assert.assertTrue(webTablesPage.isInWebTables());
+        Assert.assertEquals(webTablesPage.getRecordSalary(webTablesPage.getARecord(0)),salary);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
+    }
+
+    @Test
+    public void editFirstEmployee_NegativeSalary() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.editGeneralRecord(0);
+        String salary = "-20000";
+        formModal.clearAndFillSalary(salary);
+        webTablesPage = formModal.submitForm();
+        Assert.assertNotEquals(webTablesPage.getRecordSalary(webTablesPage.getARecord(0)),salary);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
+        Assert.assertThrows(Exception.class,() ->webTablesPage.addEmployee());
+    }
+
 
     @Test
     public void editFirstEmployee_FirstName() throws IOException {
@@ -402,6 +426,17 @@ public class WebTablesTest extends TestBase {
         webTablesPage = formModal.submitForm();
         Assert.assertTrue(webTablesPage.isInWebTables());
         Assert.assertEquals(webTablesPage.getRecordFirstName(webTablesPage.getARecord(0)),firstName);
+        Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
+    }
+
+    @Test
+    public void editFirstEmployee_FirstName_Empty() throws IOException {
+        int records = webTablesPage.getNonEmptyRecords();
+        RegistrationFormModal formModal = webTablesPage.editGeneralRecord(0);
+        String firstName = "";
+        formModal.clearAndFillFirstName(firstName);
+        webTablesPage = formModal.submitForm();
+        Assert.assertNotEquals(webTablesPage.getRecordFirstName(webTablesPage.getARecord(0)),firstName);
         Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
     }
 

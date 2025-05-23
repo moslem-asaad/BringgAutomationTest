@@ -149,6 +149,10 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         return firstNameElement.getText();
     }
 
+    public String getRecordSalary(WebElement record){
+        WebElement salaryElement = record.findElement(By.cssSelector(".rt-td:nth-child(5)"));
+        return salaryElement.getText();
+    }
 }
 
 
