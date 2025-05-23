@@ -39,30 +39,35 @@ jobs:
         run: |
           docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
 
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
       - name: Run Tests
         run: |
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
-          mkdir -p allure-results
-          cp -r target/allure-results/* allure-results/ || true
 
-      - name: Install Allure CLI
-        run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.29.1/allure-2.29.1.tgz
-          tar -zxvf allure-2.29.1.tgz
-          mv allure-2.29.1 allure
-          chmod +x allure/bin/allure
+      - name: Generate Allure report
+        run: mvn allure:report
 
-      - name: Generate Allure HTML Report
-        run: |
-          ./allure/bin/allure generate target/allure-results -o allure-report-ch --clean
-
-      - name: Upload Allure HTML Report
-        uses: actions/upload-artifact@v4
+      - name: Upload Allure report as artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: allure-report-chrome
-          path: allure-report-ch
+          name: allure-report
+          path: target/site/allure-maven-plugin
+
+      - name: Publish Allure Report to GitHub Pages (optional)
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site/allure-maven-plugin
+
 
       - name: Tear down Grid
         run: docker stop grid_container || true
@@ -94,9 +99,9 @@ jobs:
 
       - name: Install Allure CLI
         run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.29.1/allure-2.29.1.tgz
-          tar -zxvf allure-2.29.1.tgz
-          mv allure-2.29.1 allure
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+          tar -zxvf allure-2.24.0.tgz
+          mv allure-2.24.0 allure
           chmod +x allure/bin/allure
 
       - name: Generate Allure HTML Report
