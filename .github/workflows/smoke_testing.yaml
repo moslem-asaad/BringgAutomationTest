@@ -56,13 +56,13 @@ jobs:
 
       - name: Generate Allure HTML Report
         run: |
-          ./allure/bin/allure generate target/allure-results -o allure-report --clean
+          ./allure/bin/allure generate target/allure-results -o allure-report-ch --clean
 
       - name: Upload Allure HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-chrome
-          path: allure-report
+          path: allure-report-ch
 
       - name: Tear down Grid
         run: docker stop grid_container || true
@@ -101,13 +101,13 @@ jobs:
 
       - name: Generate Allure HTML Report
         run: |
-          ./allure/bin/allure generate target/allure-results -o allure-report --clean
+          ./allure/bin/allure generate target/allure-results -o allure-report-fx --clean
 
       - name: Upload Allure HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report-chrome
-          path: allure-report
+          name: allure-report-firefox
+          path: allure-report-fx
 
       - name: Tear down Grid
         run: docker stop grid_container || true
