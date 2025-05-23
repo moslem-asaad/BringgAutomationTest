@@ -72,24 +72,6 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
 
-#      - name: Install Allure CLI
-#        run: |
-#          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-#          tar -zxvf allure-2.24.0.tgz
-#          sudo mv allure-2.24.0 /opt/allure
-#          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-#
-#      - name: Generate Allure Report
-#        run: |
-#          mkdir -p target/allure-report
-#          allure generate target/allure-results -o target/allure-report --clean
-#
-#      - name: Upload Allure HTML Report as Artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: allure-report-chrome
-#          path: target/allure-report
-
       - name: Tear down Grid
         run: docker stop grid_container || true
 
@@ -119,24 +101,29 @@ jobs:
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
-#      - name: Install Allure CLI
-#        run: |
-#          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-#          tar -zxvf allure-2.24.0.tgz
-#          sudo mv allure-2.24.0 /opt/allure
-#          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-#
-#
-#      - name: Generate Allure Report
-#        run: |
-#          mkdir -p target/allure-report
-#          allure generate target/allure-results -o target/allure-report --clean
-#
-#      - name: Upload Allure HTML Report as Artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: allure-report-chrome
-#          path: target/allure-report
+      - name: Load test report history from gh-pages page
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
 
       - name: Tear down Grid
         run: docker stop grid_container || true
