@@ -19,8 +19,6 @@ on:
         required: false
         type: boolean
 
-
-
 jobs:
   TestChrome_131_0:
     name: Test Chrome 131.0
@@ -45,39 +43,22 @@ jobs:
         run: |
           export BROWSER=chrome
           export GRID_URL=${{ github.event.inputs.grid_url }}
-          
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
+          mkdir -p allure-results
+          cp -r target/allure-results/* allure-results/ || true
 
-      - name: Load test report history from gh-pages page
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+      - name: Generate Allure Report
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+          tar -zxvf allure-2.24.0.tgz
+          mv allure-2.24.0 allure
+          ./allure/bin/allure generate allure-results -o allure-report --clean
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
-        with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: allure-results
-
-      - name: Upload Allure Report as Artifact
-        if: always()
+      - name: Upload Allure HTML Report as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: allure-history
-
-#      - name: Publish test report
-#        uses: peaceiris/actions-gh-pages@v3
-#        if: always()
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_branch: gh-pages
-#          publish_dir: allure-history
+          name: allure-report-chrome
+          path: allure-report
 
       - name: Tear down Grid
         run: docker stop grid_container || true
@@ -105,62 +86,22 @@ jobs:
         run: |
           export BROWSER=firefox
           export GRID_URL=${{ github.event.inputs.grid_url }}
-          
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
-          
-      - name: Load test report history from gh-pages page
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+          mkdir -p allure-results
+          cp -r target/allure-results/* allure-results/ || true
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
-        with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: allure-results
+      - name: Generate Allure Report
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+          tar -zxvf allure-2.24.0.tgz
+          mv allure-2.24.0 allure
+          ./allure/bin/allure generate allure-results -o allure-report --clean
 
-      - name: Upload Allure Report as Artifact
-        if: always()
+      - name: Upload Allure HTML Report as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: allure-history
-
-#      - name: Publish test report
-#        uses: peaceiris/actions-gh-pages@v3
-#        if: always()
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_branch: gh-pages
-#          publish_dir: allure-history
-
-
-      #      - name: Install Allure CLI
-#        run: |
-#          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-#          tar -zxvf allure-2.24.0.tgz
-#          sudo mv allure-2.24.0 /opt/allure
-#          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-#
-#
-#      - name: Generate Allure Report
-#        run: |
-#          mkdir -p target/allure-report
-#          allure generate target/allure-results -o target/allure-report --clean
-#
-#      - name: Upload Allure HTML Report as Artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: allure-report-chrome
-#          path: target/allure-report
+          name: allure-report-firefox
+          path: allure-report
 
       - name: Tear down Grid
         run: docker stop grid_container || true
-          
-
-      
