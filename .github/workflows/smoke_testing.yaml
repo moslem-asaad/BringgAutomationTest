@@ -53,7 +53,7 @@ jobs:
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
       - name: Upload TestNG Report (HTML)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: testng-report-ch
           path: test-output/
@@ -87,7 +87,7 @@ jobs:
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-smoke.xml
 
       - name: Upload TestNG Report (HTML)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: testng-report-fx
           path: test-output/
