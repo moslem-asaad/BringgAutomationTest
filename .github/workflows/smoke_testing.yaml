@@ -56,17 +56,17 @@ jobs:
         run: mvn allure:report
 
       - name: Upload Allure report as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/site/allure-maven-plugin
 
-      - name: Publish Allure Report to GitHub Pages (optional)
-        if: success()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/site/allure-maven-plugin
+#      - name: Publish Allure Report to GitHub Pages (optional)
+#        if: success()
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./target/site/allure-maven-plugin
 
 
       - name: Tear down Grid
