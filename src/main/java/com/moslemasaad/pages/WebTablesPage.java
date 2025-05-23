@@ -41,7 +41,11 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     @FindBy(id = "searchBox")
     private WebElement searchBox;
 
+    @FindBy(xpath = "//h1[contains(text(),'Web Tables')]")
+    private WebElement webTableTitle;
+
     private final String deleteId = "delete-record-";
+    private final String editId = "edit-record-";
 
     public WebTablesPage(WebDriver driver) {
         this.driver = driver;
@@ -58,6 +62,10 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     @Override
     public void isLoaded() throws Error {
         Assert.assertTrue(driver.getTitle().contains("DEMOQA"));
+    }
+
+    public boolean isInWebTables(){
+        return webTableTitle.getText().equals("Web Tables");
     }
 
     private void removeAds() {
@@ -97,7 +105,6 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         WebElement deleteButton = wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id(idRecord)));
         deleteButton.click();
-        this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
     }
 
     public void deleteFirstVisibleFilteredRecord() {
@@ -121,6 +128,27 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         addRecordButton.click();
         return new RegistrationFormModal(driver,false);
     }
+
+    public RegistrationFormModal editGeneralRecord(int indx) {
+        removeAds();
+        String idRecord = editId + (indx + 1);
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.id(idRecord)));
+        editButton.click();
+        return new RegistrationFormModal(driver,true);
+    }
+
+    public WebElement getARecord(int idx){
+        return records.get(idx);
+    }
+
+    public String getRecordFirstName(WebElement record){
+        WebElement firstNameElement = record.findElement(By.cssSelector(".rt-td:first-child"));
+        return firstNameElement.getText();
+    }
+
 }
 
 
