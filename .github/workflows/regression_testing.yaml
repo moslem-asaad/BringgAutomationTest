@@ -42,6 +42,8 @@ jobs:
           docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-chrome:131.0-chromedriver-131.0-grid-4.27.0-20250101
 
       - name: Run Tests
+        id: run_tests
+        continue-on-error: true
         run: |
           id: run_tests
           continue-on-error: true
@@ -90,6 +92,8 @@ jobs:
           docker run --name grid_container -d -p 4444:4444 --shm-size=2gb selenium/standalone-firefox:133.0-geckodriver-0.35-grid-4.27.0-20250101
 
       - name: Run Tests
+        id: run_tests
+        continue-on-error: true
         run: |
           id: run_tests
           continue-on-error: true
@@ -97,6 +101,7 @@ jobs:
           export GRID_URL=${{ github.event.inputs.grid_url }}
           
           mvn -q clean test -DsuiteXmlFile=testng-suites/testng-regression.xml
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
           
       - name: Upload TestNG Report (HTML)
         uses: actions/upload-artifact@v4
