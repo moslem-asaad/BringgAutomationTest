@@ -22,8 +22,19 @@ Main source code:
 
 - #### /pages/
     Page Object Model classes:
-- `WebTablesPage.java`
-- `RegistrationFormModal.java`
+- `WebTablesPage.java` - 
+  Represents the main Web Tables page.
+  - Encapsulates interactions like:
+      - Adding/editing/deleting records
+      - Searching/filtering
+      - Accessing record details
+      - Removing ads before actions (custom utility)
+    
+- `RegistrationFormModal.java` - Represents the form modal for adding or editing employee records.
+  - Encapsulates interactions like:
+      - Filling and clearing form fields
+      - Validating field states
+      - Submitting or closing the form
 
 
 ### src/main/resources
@@ -47,6 +58,14 @@ TestNG suite XML files for grouping tests:
 - `pom.xml` - Maven configuration.
 - `README.md` - Project documentation.
 - `RETRO.md` - Retrospective.
+
+####  Example Flow
+
+1. `WebTablesTest` loads `WebTablesPage`
+2. Calls `addEmployee()` → returns `RegistrationFormModal`
+3. Fills data using `clearAndFill...()` or `appendAndFill...()`
+4. Submits via `submitForm()` → returns back to `WebTablesPage`
+5. More verification happens 
 
 
 ## Features & Scenarios Covered
