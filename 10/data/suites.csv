@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri May 23 15:33:28 GMT 2025","Fri May 23 15:33:29 GMT 2025","1635","Smoke Suite","SmokeTests","WebTablesTest","WebTablesTest","addEmployeeSuccess","addEmployeeSuccess",""
+"passed","Fri May 23 15:33:34 GMT 2025","Fri May 23 15:33:34 GMT 2025","8","Smoke Suite","SmokeTests","WebTablesTest","WebTablesTest","verifyTitle","verifyTitle",""
