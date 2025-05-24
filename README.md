@@ -154,13 +154,14 @@ java -jar selenium-server-<version>.jar standalone
    mvn clean test -DsuiteXmlFile=testng-suites/${suiteName}.xml
 ```
 you can override the browser by adding to the command `BROWSER=firefox`. 
-3. To run with selenium grid, run:
+
+3.To run with selenium grid, run:
    
-   ```bash
-   java -jar selenium-server-<version>.jar standalone
-    ```
+   * ```bash 
+     java -jar selenium-server-<version>.jar standalone
+   
    then,
-   ```bash
+   * ```bash
      GRID_URL=http://localhost:4444 mvn clean test
      ```
      
