@@ -5,7 +5,6 @@ This project automates the test scenarios for [DemoQA Web Tables](https://demoqa
 It also includes GitHub Actions workflows and modular TestNG XML suites for smoke, regression, and positive/negative testing.
 
 ---
-
 ## Project Structure
 
 ### .github/workflows
@@ -84,6 +83,12 @@ TestNG suite XML files for grouping tests:
 | TestNG   | 7.9.0       |
 | Maven    | ✔️          |
 | GitHub Actions | ✔️     |
+
+## POM Structure
+
+[pom structure.pdf](https://github.com/user-attachments/files/20421510/pom.structure.pdf)
+
+
 
 ---
 
