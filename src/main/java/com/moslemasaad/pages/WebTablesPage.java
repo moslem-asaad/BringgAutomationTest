@@ -1,9 +1,6 @@
 package com.moslemasaad.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -108,11 +105,15 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     }
 
     public void deleteFirstVisibleFilteredRecord() {
-        List<WebElement> records = driver.findElements(By.cssSelector(".rt-tr-group"));
-        for (WebElement row : records) {
-            WebElement deleteButton = row.findElement(By.xpath("//span[@title='Delete']"));
-            deleteButton.click();
-            break;
+        List<WebElement> rows = driver.findElements(By.cssSelector(".rt-tr-group"));
+        for (WebElement row : rows) {
+            try {
+                WebElement deleteButton = row.findElement(By.cssSelector("span[title='Delete']"));
+                deleteButton.click();
+                break;
+            } catch (StaleElementReferenceException e) {
+                rows = driver.findElements(By.cssSelector(".rt-tr-group"));
+            }
         }
     }
 
@@ -120,6 +121,9 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         removeAds();
         searchBox.clear();
         searchBox.sendKeys(prefix);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".rt-tr-group"), 0));
+
         return driver.findElements(By.className("rt-tr-group"));
     }
 
