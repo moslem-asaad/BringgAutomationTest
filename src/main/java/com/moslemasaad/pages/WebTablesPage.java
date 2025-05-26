@@ -66,6 +66,7 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     }
 
     public boolean isInWebTables(){
+        this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         return webTableTitle.getText().equals("Web Tables");
     }
 
@@ -103,12 +104,17 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     public void deleteGeneralRecord(int indx) {
         removeAds();
         recordsWait();
+
         String idRecord = deleteId + (indx + 1);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement deleteButton = wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id(idRecord)));
-        deleteButton.click();
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", deleteButton);
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(deleteButton)).click();
+
+//        deleteButton.click();
     }
 
     public void deleteFirstVisibleFilteredRecord() {
@@ -117,6 +123,11 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         for (WebElement row : rows) {
             try {
                 WebElement deleteButton = row.findElement(By.cssSelector("span[title='Delete']"));
+                ((JavascriptExecutor) driver).executeScript(
+                        "arguments[0].scrollIntoView(true);", deleteButton);
+
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+                wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
                 deleteButton.click();
                 break;
             } catch (StaleElementReferenceException e) {
@@ -150,7 +161,11 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement editButton = wait.until(ExpectedConditions.visibilityOfElementLocated
                 (By.id(idRecord)));
-        editButton.click();
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", editButton);
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.elementToBeClickable(editButton)).click();
+
+//        editButton.click();
         return new RegistrationFormModal(driver,true);
     }
 

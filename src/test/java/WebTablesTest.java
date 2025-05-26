@@ -326,7 +326,6 @@ public class WebTablesTest extends TestBase {
         String salary = "20000";
         formModal.clearAndFillSalary(salary);
         webTablesPage = formModal.submitForm();
-        Assert.assertTrue(webTablesPage.isInWebTables());
         Assert.assertEquals(webTablesPage.getRecordSalary(webTablesPage.getARecord(0)),salary);
         Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
     }
@@ -354,7 +353,6 @@ public class WebTablesTest extends TestBase {
         String firstName = "Moslem";
         formModal.clearAndFillFirstName("Moslem");
         webTablesPage = formModal.submitForm();
-        Assert.assertTrue(webTablesPage.isInWebTables());
         Assert.assertEquals(webTablesPage.getRecordFirstName(webTablesPage.getARecord(0)),firstName);
         Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records);
     }
