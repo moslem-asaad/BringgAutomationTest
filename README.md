@@ -88,6 +88,20 @@ TestNG suite XML files for grouping tests:
 
 [pom structure.pdf](https://github.com/user-attachments/files/20421510/pom.structure.pdf)
 
+## Test Cases
+
+| Test Case ID | Title                                      | Steps                                                                                                                                         | Expected Result                                                  |
+|--------------|--------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
+| TC1          | Add a new employee record                  | 1. Open the web tables page<br>2. Click "Add" button<br>3. Fill all required fields with valid data<br>4. Submit form                        | New record appears in the table with the entered details         |
+| TC1.1        | Add new record with missing mandatory fields | 1. Click "Add" button<br>2. Leave required fields (e.g., First Name or Email) empty<br>3. Submit form                                         | Form validation error displayed, record is **NOT** added         |
+| TC1.2        | Add new record with invalid email format   | 1. Click "Add" button<br>2. Enter invalid email (e.g., `abc@@example`)<br>3. Submit form                                                      | Email format validation error displayed, record is **NOT** added |
+| TC1.3        | Add new record with negative age           | 1. Click "Add" button<br>2. Enter negative number in Age field<br>3. Submit form                                                              | Validation error or rejected input, record is **NOT** added      |
+| TC2          | Edit an existing record’s salary           | 1. Locate a record<br>2. Click "Edit" button<br>3. Change the salary field<br>4. Save changes                                                  | Updated salary value is visible in the record row                |
+| TC3          | Delete a record                            | 1. Locate the first row<br>2. Click the trash icon<br>3. Confirm deletion if required                                                          | The record is removed and replaced by an empty row               |
+| TC4          | Filter records by name                     | 1. Type a valid name (e.g., "Cie") into the search box<br>2. Count visible non-empty rows                                                     | Only matching records are displayed                              |
+| TC5          | Add a record, then close the form          | 1. Click "Add"<br>2. Fill out the form<br>3. Click the X button (close form)<br>4. Return to table view                                       | No record is added                                               |
+| TC6          | Fill form partially, close, then reopen    | 1. Fill some fields<br>2. Close the form<br>3. Reopen<br>4. Submit directly                                                                   | Behavior currently inconsistent (see RETRO.md bug)               |
+
 
 
 ---
