@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.LoadableComponent;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.SkipException;
 
 import java.time.Duration;
 import java.util.List;
@@ -53,6 +54,9 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     protected void load() {
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         driver.get(baseURL);
+        if (driver.getPageSource().contains("502 Bad Gateway")) {
+            throw new SkipException("502 Bad Gateway encountered. Skipping test.");
+        }
         System.out.println(driver.getCurrentUrl());
     }
 
@@ -88,6 +92,8 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
 
     public String getRecordEmail(int indx) {
         removeAds();
+        recordsWait();
+
         WebElement element = records.get(indx);
         WebElement emailSection = element.findElement(By.cssSelector(".rt-td:nth-child(4)"));
         return emailSection.getAccessibleName();
@@ -96,6 +102,7 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
 
     public void deleteGeneralRecord(int indx) {
         removeAds();
+        recordsWait();
         String idRecord = deleteId + (indx + 1);
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -105,6 +112,7 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     }
 
     public void deleteFirstVisibleFilteredRecord() {
+        recordsWait();
         List<WebElement> rows = driver.findElements(By.cssSelector(".rt-tr-group"));
         for (WebElement row : rows) {
             try {
@@ -119,8 +127,10 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
 
     public List<WebElement> filterRecords(String prefix){
         removeAds();
+
         searchBox.clear();
         searchBox.sendKeys(prefix);
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".rt-tr-group"), 0));
 
@@ -156,6 +166,11 @@ public class WebTablesPage extends LoadableComponent<WebTablesPage> {
     public String getRecordSalary(WebElement record){
         WebElement salaryElement = record.findElement(By.cssSelector(".rt-td:nth-child(5)"));
         return salaryElement.getText();
+    }
+
+    private void recordsWait() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".rt-tbody .rt-tr-group")));
     }
 }
 

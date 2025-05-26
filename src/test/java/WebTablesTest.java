@@ -2,6 +2,7 @@ import com.moslemasaad.pages.RegistrationFormModal;
 import com.moslemasaad.pages.WebTablesPage;
 import io.qameta.allure.testng.AllureTestNg;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.*;
 
 import java.io.IOException;
@@ -23,6 +24,9 @@ public class WebTablesTest extends TestBase {
         super.setUp();
         String baseURL = "https://demoqa.com/webtables";
         driver.get(baseURL);
+        if (driver.getPageSource().contains("502 Bad Gateway")) {
+            throw new SkipException("502 Bad Gateway encountered. Skipping test.");
+        }
         webTablesPage = new WebTablesPage(driver).get();
     }
 
