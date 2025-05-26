@@ -274,7 +274,7 @@ public class WebTablesTest extends TestBase {
         Assert.assertEquals(records,webTablesPage.getNonEmptyRecords());
     }
 
-    @Test(groups = {"positive"})
+    @Test(priority = 6, groups = {"positive"})
     public void addEmployeeFillFormCloseForm_submitForm() throws IOException {
         int records = webTablesPage.getNonEmptyRecords();
         RegistrationFormModal formModal = webTablesPage.addEmployee();
@@ -291,7 +291,7 @@ public class WebTablesTest extends TestBase {
         Assert.assertEquals(webTablesPage.getNonEmptyRecords(),records+1);
     }
 
-    @Test(groups = {"positive"})
+    @Test(priority = 6, groups = {"positive"})
     public void addEmployeeFillName_CloseForm_FillFields_SubmitForm() throws IOException {
         int records = webTablesPage.getNonEmptyRecords();
         RegistrationFormModal formModal = webTablesPage.addEmployee();
