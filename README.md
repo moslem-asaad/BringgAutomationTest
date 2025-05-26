@@ -151,7 +151,9 @@ java -jar selenium-server-<version>.jar standalone
 1. **you can run**:
    ```bash
    mvn clean test -DsuiteXmlFile=testng-suites/testng-master.xml
-2. **Or**:
+    ```
+   >If you're on Windows and this command doesn't work in Command Prompt or PowerShell, try running it in the Git Bash terminal instead.
+3. **Or**:
    ```bash
    mvn clean test
 **To run a specific suit you can run**
@@ -200,7 +202,8 @@ CI is configured in the `.github/workflows/` directory with the following suites
 
 #### To run CI tests:
 
-1. Go to the **Actions** tab of the repository.
+1. Fork the repository.
+2. Go to the **Actions** tab of the forked repository.
 2. Select the desired workflow (e.g., **Smoke Testing**).
 3. Click **“Run workflow”** and choose the browser to run the tests on.
 4. View the execution results and logs under the job run.
